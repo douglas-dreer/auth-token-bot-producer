@@ -1,0 +1,49 @@
+# --- Configurações do Servidor ---
+server:
+  port: 8080
+
+# --- Configurações do Spring ---
+spring:
+  # --- Banco de Dados H2 ---
+  datasource:
+    url: jdbc:h2:file:./authbot-db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa # OK, você definiu 'sa' aqui, sem problemas!
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  # --- RabbitMQ ---
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
+
+  # --- H2 Console ---
+  h2:
+    console:
+      enabled: true
+      path: /database
+  config:
+    import: "file:.env[.properties]"
+
+# --- Configurações Customizadas do AuthBot ---
+authbot:
+  rabbitmq:
+    exchange: auth-exchange
+    routingkey: auth.token.found
+
+# --- Configurações do Google ---
+google:
+  app:
+    name: AuthBotDetector
+  oauth:
+    credentials:
+      path: classpath:credentials.json
+    tokens:
+      directory: ./tokens
